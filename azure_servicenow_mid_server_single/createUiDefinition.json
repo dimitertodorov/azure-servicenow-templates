@@ -16,7 +16,7 @@
                 "method": "POST",
                 "path": "/providers/Microsoft.ResourceGraph/resources?api-version=2021-03-01",
                 "body": {
-                  "query": "resources | where type =~ \"microsoft.storage/storageaccounts\" and tags.SnowEnvironment != \"\" | project label = strcat(tags.SnowEnvironment,\"-\",tags.SnowHost), description = location, value = pack(\"url\", properties.primaryEndpoints.blob, \"resourceId\", id, \"subscriptionId\", subscriptionId, \"resourceGroup\", resourceGroup, \"location\", location, \"subscriptionId\", subscriptionId, \"tags\", tags) | order by label asc"
+                  "query": "resources | where type =~ \"microsoft.storage/storageaccounts\" and isnotempty(tags.SnowEnvironment) | join kind=leftouter (resourcecontainers | where type == \"microsoft.resources/subscriptions\" | project subscriptionId, subscriptionName = name) on subscriptionId | project label = strcat(tags.SnowEnvironment, \" - \", subscriptionName, \" - \", coalesce(tags.SnowHost, \"unknown\")), description = location, value = pack(\"url\", properties.primaryEndpoints.blob, \"resourceId\", id, \"subscriptionId\", subscriptionId, \"subscriptionName\", subscriptionName, \"resourceGroup\", resourceGroup, \"location\", location, \"tags\", tags) | order by label asc | summarize result = tojson(pack_array(pack(\"label\", label, \"description\", description, \"value\", value)))"
                 }
               }
             },
@@ -50,13 +50,13 @@
           "label": "MID Server Config",
           "elements": [
             {
-              "name":"containerRegistryArmApi",
+              "name": "containerRegistryArmApi",
               "type": "Microsoft.Solutions.ArmApiControl",
               "request": {
                 "method": "POST",
                 "path": "/providers/Microsoft.ResourceGraph/resources?api-version=2021-03-01",
                 "body": {
-                    "query": "[concat('resources | where type == \"microsoft.containerregistry/registries\" and id == \"', steps('basics').providerDropDown.tags.SnowContainerRegistryId, '\" | project id, loginServer=properties.loginServer')]"
+                  "query": "[concat('resources | where type == \"microsoft.containerregistry/registries\" and id == \"', steps('basics').providerDropDown.tags.SnowContainerRegistryId, '\" | project id, loginServer=properties.loginServer')]"
                 }
               }
             },
@@ -146,7 +146,7 @@
               "visible": true
             },
             {
-              "name":"customImageName",
+              "name": "customImageName",
               "type": "Microsoft.Common.TextBox",
               "label": "Custom Image Name",
               "defaultValue": "snow_mid_server",
@@ -176,7 +176,7 @@
                     "message": "Dockerfile content cannot be empty."
                   }
                 ]
-              }              
+              }
             },
             {
               "name": "forceBuildCustomImage",
