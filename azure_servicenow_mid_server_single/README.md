@@ -23,7 +23,7 @@ This template uses Azure Resource Manager (ARM) templates compiled from Bicep so
 
 - **Template Type**: Microsoft_Azure_CreateUIDef
 - **Base Template**: azure_servicenow_mid_server_single
-- **UI Definition**: createUiDefMidServer.json
+- **UI Definition**: uiFormDefinition.mid_server_single.json
 
 ## Prerequisites
 
