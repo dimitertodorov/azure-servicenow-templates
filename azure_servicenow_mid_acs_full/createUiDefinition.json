@@ -23,10 +23,6 @@
                 "constraints": {
                   "validations": [
                     {
-                      "permission": "Microsoft.Resources/resourceGroups/write",
-                      "message": "You must have write access to the subscription to deploy this resource."
-                    },
-                    {
                       "isValid": "[or(equals(steps('basics').devopsEnvironmentDropdown.resourceGroupId, steps('basics').resourceScope.resourceGroup.id), steps('basics').deployNewEnvironment)]",
                       "message": "The selected environment is not in the same resource group as the new environment."
                     }
@@ -465,28 +461,126 @@
               }
             },
             {
-              "name": "snowUsername",
-              "type": "Microsoft.Common.TextBox",
-              "label": "ServiceNow Admin Username, must have access to sys_user, sysauto_script, and ecc_* tables",
-              "toolTip": "Admin username for ServiceNow.",
-              "defaultValue": "admin"
+              "name": "auth",
+              "type": "Microsoft.Common.Section",
+              "label": "Authentication",
+              "visible": true,
+              "elements": [
+                {
+                  "name": "authenticationMethod",
+                  "type": "Microsoft.Common.DropDown",
+                  "label": "Authentication Method",
+                  "toolTip": "Select the authentication method for ServiceNow.",
+                  "defaultValue": "Basic",
+                  "constraints": {
+                    "allowedValues": [
+                      {
+                        "value": "Basic",
+                        "label": "Basic Authentication"
+                      },
+                      {
+                        "value": "OAuthToken",
+                        "label": "OAuth Token"
+                      },
+                      {
+                        "value": "OAuth",
+                        "label": "OAuth"
+                      }
+                    ],
+                    "required": true
+                  }
+                },
+                {
+                  "name": "snowClientId",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "ServiceNow Client ID",
+                  "toolTip": "Client ID for ServiceNow OAuth authentication.",
+                  "visible": "[or(equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuth'), equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuthToken'))]",
+                  "constraints": {
+                    "required": "[or(equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuth'), equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuthToken'))]",
+                    "validationMessage": "Client ID is required for OAuth authentication."
+                  }
+                },
+                {
+                  "name": "snowClientSecret",
+                  "type": "Microsoft.Common.PasswordBox",
+                  "label": {
+                    "password": "ServiceNow Client Secret"
+                  },
+                  "toolTip": "Client Secret for ServiceNow OAuth authentication.",
+                  "visible": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuth')]",
+                  "constraints": {
+                    "required": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuth')]",
+                    "validationMessage": "The Client Secret must be between 12 and 123 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+                  },
+                  "options": {
+                    "hideConfirmation": true
+                  }
+                },
+                {
+                  "name": "snowAccessToken",
+                  "type": "Microsoft.Common.PasswordBox",
+                  "label": {
+                    "password": "ServiceNow Access Token"
+                  },
+                  "toolTip": "Access Token for ServiceNow OAuth authentication.",
+                  "visible": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuthToken')]",
+                  "constraints": {
+                    "required": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuthToken')]",
+                    "validationMessage": "The Access Token must be provided for OAuth Token authentication."
+                  },
+                  "options": {
+                    "hideConfirmation": true
+                  }
+                },
+                {
+                  "name": "snowRefreshToken",
+                  "type": "Microsoft.Common.PasswordBox",
+                  "label": {
+                    "password": "ServiceNow Refresh Token"
+                  },
+                  "toolTip": "Refresh Token for ServiceNow OAuth authentication.",
+                  "visible": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuthToken')]",
+                  "constraints": {
+                    "required": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuthToken')]",
+                    "validationMessage": "The Refresh Token must be provided for OAuth Token authentication."
+                  },
+                  "options": {
+                    "hideConfirmation": true
+                  }
+                },
+                {
+                  "name": "snowUsername",
+                  "type": "Microsoft.Common.TextBox",
+                  "label": "ServiceNow Admin Username, must have access to sys_user, sysauto_script, and ecc_* tables",
+                  "toolTip": "Admin username for ServiceNow.",
+                  "defaultValue": "admin",
+                  "visible": "[or(equals(steps('servicenowConfig').auth.authenticationMethod, 'Basic'), equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuth'))]",
+                  "constraints": {
+                    "required": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'Basic')]",
+                    "validationMessage": "Username must be between 3 and 64 characters long. Required for Basic authentication."
+                  }
+                },
+                {
+                  "name": "snowPassword",
+                  "type": "Microsoft.Common.PasswordBox",
+                  "label": {
+                    "password": "ServiceNow Administrator Password",
+                    "confirmPassword": "Confirm Password"
+                  },
+                  "toolTip": "Administrative account password for ServiceNow",
+                  "visible": "[or(equals(steps('servicenowConfig').auth.authenticationMethod, 'Basic'), equals(steps('servicenowConfig').auth.authenticationMethod, 'OAuth'))]",
+                  "constraints": {
+                    "required": "[equals(steps('servicenowConfig').auth.authenticationMethod, 'Basic')]",
+                    "validationMessage": "The password must be between 12 and 123 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+                  },
+                  "options": {
+                    "hideConfirmation": false
+                  }
+                }
+              ]
             },
-            {
-              "name": "snowPasswordElement",
-              "type": "Microsoft.Common.PasswordBox",
-              "label": {
-                "password": "ServiceNow Administrator Password",
-                "confirmPassword": "Confirm Password"
-              },
-              "toolTip": "Administrative account password for ServiceNow",
-              "constraints": {
-                "required": true,
-                "validationMessage": "The password must be between 12 and 123 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
-              },
-              "options": {
-                "hideConfirmation": false
-              }
-            },
+
             {
               "name": "runValidationScript",
               "type": "Microsoft.Common.CheckBox",
@@ -512,8 +606,14 @@
         "subnetAddressPrefix": "[steps('servicenowConfig').networkDebug.subnetAddressPrefix]",
         "location": "[steps('basics').resourceScope.location.name]",
         "snowHost": "[steps('servicenowConfig').snowHost]",
-        "snowUsername": "[steps('servicenowConfig').snowUsername]",
-        "snowPassword": "[steps('servicenowConfig').snowPasswordElement]",
+        "snowCredentials": {
+          "Instance": "[steps('servicenowConfig').snowHost]",
+          "Credential": "[if(and(not(empty(steps('servicenowConfig').auth.snowUsername)), not(empty(steps('servicenowConfig').auth.snowPassword))), parse(concat('{\"UserName\": \"', steps('servicenowConfig').auth.snowUsername, '\", \"Password\": \"', steps('servicenowConfig').auth.snowPassword, '\"}')), parse('{}'))]",
+          "ClientID": "[if(not(empty(steps('servicenowConfig').auth.snowClientId)), steps('servicenowConfig').auth.snowClientId, '')]",
+          "ClientSecret": "[if(not(empty(steps('servicenowConfig').auth.snowClientSecret)), steps('servicenowConfig').auth.snowClientSecret, '')]",
+          "AccessToken": "[if(not(empty(steps('servicenowConfig').auth.snowAccessToken)), steps('servicenowConfig').auth.snowAccessToken, '')]",
+          "RefreshToken": "[if(not(empty(steps('servicenowConfig').auth.snowRefreshToken)), steps('servicenowConfig').auth.snowRefreshToken, '')]"
+        },
         "containerSubnetId": "[steps('servicenowConfig').subnetIdOutput]",
         "virtualNetworkRoleId": "9980e02c-c2be-4d73-94e8-173b1dc7cf3c",
         "containerRegistrySubscription": "[last(take(split(steps('basics').containerRegistrySection.containerRegistryOutput,'/'),3))]",

@@ -11,9 +11,9 @@ languages:
 ---
 # azure_servicenow_mid_acs_full
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#view/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3a%2f%2fraw.githubusercontent.com%2fdimitertodorov%2fazure-servicenow-templates%2frefs%2fheads%2fmaster%2fazure_servicenow_mid_acs_full%2fmainTemplate.json/uiFormDefinitionUri/https%3a%2f%2fraw.githubusercontent.com%2fdimitertodorov%2fazure-servicenow-templates%2frefs%2fheads%2fmaster%2fazure_servicenow_mid_acs_full%2fcreateUiDefinition.json)
-[![Deploy To Azure Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#view/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3a%2f%2fraw.githubusercontent.com%2fdimitertodorov%2fazure-servicenow-templates%2frefs%2fheads%2fmaster%2fazure_servicenow_mid_acs_full%2fmainTemplate.json/uiFormDefinitionUri/https%3a%2f%2fraw.githubusercontent.com%2fdimitertodorov%2fazure-servicenow-templates%2frefs%2fheads%2fmaster%2fazure_servicenow_mid_acs_full%2fcreateUiDefinition.json)
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3a%2f%2fraw.githubusercontent.com%2fdimitertodorov%2fazure-servicenow-templates%2frefs%2fheads%2fmaster%2fazure_servicenow_mid_acs_full%2fmainTemplate.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#view/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3a%2f%2fsnowmiddeploy.blob.core.windows.net%2fsnowmid-azure-templates%2fazure_servicenow_mid_acs_full%2fmainTemplate.json/uiFormDefinitionUri/https%3a%2f%2fsnowmiddeploy.blob.core.windows.net%2fsnowmid-azure-templates%2fazure_servicenow_mid_acs_full%2fcreateUiDefinition.json)
+[![Deploy To Azure Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#view/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3a%2f%2fsnowmiddeploy.blob.core.windows.net%2fsnowmid-azure-templates%2fazure_servicenow_mid_acs_full%2fmainTemplate.json/uiFormDefinitionUri/https%3a%2f%2fsnowmiddeploy.blob.core.windows.net%2fsnowmid-azure-templates%2fazure_servicenow_mid_acs_full%2fcreateUiDefinition.json)
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3a%2f%2fsnowmiddeploy.blob.core.windows.net%2fsnowmid-azure-templates%2fazure_servicenow_mid_acs_full%2fmainTemplate.json)
 
 Full ServiceNow MID Server deployment with ACS + Optional Network Deployment
 
@@ -44,7 +44,7 @@ Click the "Deploy to Azure" button above to deploy this template through the Azu
 ```bash
 az deployment group create \
   --resource-group myResourceGroup \
-  --template-uri https://raw.githubusercontent.com/dimitertodorov/azure-servicenow-templates/refs/heads/master/azure_servicenow_mid_acs_full/mainTemplate.json \
+  --template-uri https://snowmiddeploy.blob.core.windows.net/snowmid-azure-templates/azure_servicenow_mid_acs_full/mainTemplate.json \
   --parameters @parameters.json
 ```
 
@@ -53,7 +53,7 @@ az deployment group create \
 ```powershell
 New-AzResourceGroupDeployment \
   -ResourceGroupName "myResourceGroup" \
-  -TemplateUri "https://raw.githubusercontent.com/dimitertodorov/azure-servicenow-templates/refs/heads/master/azure_servicenow_mid_acs_full/mainTemplate.json" \
+  -TemplateUri "https://snowmiddeploy.blob.core.windows.net/snowmid-azure-templates/azure_servicenow_mid_acs_full/mainTemplate.json" \
   -TemplateParameterFile "parameters.json"
 ```
 
