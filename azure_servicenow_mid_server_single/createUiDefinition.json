@@ -95,7 +95,13 @@
               "toolTip": "Provide a unique name for the MID Server.",
               "constraints": {
                 "required": true,
+                "regex": "^[a-zA-Z][A-Za-z0-9]{3,15}$",
+                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 3 to 15 characters.",
                 "validations": [
+                  {
+                    "isValid": "^[a-zA-Z][a-zA-Z0-9]{3,15}$",
+                    "message": "Only alphanumeric characters are allowed, must start with a letter, and the value must be 4 to 15 characters."
+                  },
                   {
                     "isValid": "[empty(filter(steps('midServer').midServersApi.data, (item) => equals(item.label, steps('midServer').midServerName)))]",
                     "message": "MID Server name already exists."
@@ -111,7 +117,7 @@
               "toolTip": "Provide a cluster name for the MID Server.",
               "constraints": {
                 "required": true,
-                "regex": "^[A-Za-z0-9]{3,15}$",
+                "regex": "^[a-zA-Z][A-Za-z0-9]{3,15}$",
                 "validationMessage": "Only alphanumeric characters are allowed, and the value must be 3 to 15 characters."
               }
             },
@@ -122,8 +128,8 @@
               "max": 8,
               "label": "Memory",
               "subLabel": "GB",
-              "defaultValue": 4,
-              "showStepMarkers": false,
+              "defaultValue": 2,
+              "showStepMarkers": true,
               "toolTip": "Pick the size in GB",
               "constraints": {
                 "required": false
@@ -137,7 +143,7 @@
               "max": 4,
               "label": "CPU Cores",
               "subLabel": "",
-              "defaultValue": 2,
+              "defaultValue": 1,
               "showStepMarkers": false,
               "toolTip": "Pick the number of CPU cores",
               "constraints": {
